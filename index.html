@@ -1,11 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11182b">
+  <title>SKYBOUND — 雲の向こうへ</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    ようこそ私のページへ！
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="SKYBOUND"><span>✦</span> SKYBOUND</a>
+      <div class="hud" aria-live="polite">
+        <span class="coin-icon">◆</span><span id="coins">0</span><span class="muted">/ 5</span>
+        <span class="divider"></span><span class="heart">♥</span><span id="lives">3</span>
+      </div>
+      <button id="restart" class="restart">↻ <span>RESTART</span></button>
+    </header>
+    <section class="stage" aria-label="横スクロールアクションゲーム">
+      <canvas id="game" width="960" height="540" aria-label="矢印キーで移動、スペースでジャンプ"></canvas>
+      <div id="intro" class="overlay">
+        <span class="eyebrow">A LITTLE ADVENTURE</span>
+        <h1>雲の向こうへ。</h1>
+        <p>コインを集めながら、ゴールを目指そう。</p>
+        <button id="play" class="play">冒険をはじめる <span>→</span></button>
+        <div class="hint"><kbd>←</kbd><kbd>→</kbd> 移動 <i>·</i> <kbd>SPACE</kbd> ジャンプ</div>
+      </div>
+      <div id="result" class="overlay" hidden>
+        <span id="result-eyebrow" class="eyebrow"></span>
+        <h2 id="result-title"></h2>
+        <p id="result-text"></p>
+        <button id="again" class="play">もう一度遊ぶ <span>↻</span></button>
+      </div>
+      <div class="level"><i></i> LEVEL 01 <span>/</span> CLOUD ISLANDS</div>
+    </section>
+    <footer class="controls">
+      <span class="caption">HOW TO PLAY</span>
+      <span><kbd>←</kbd><kbd>→</kbd> 移動</span>
+      <span><kbd class="space">SPACE</kbd> ジャンプ</span>
+      <span class="mobile-note">スマホは画面下のボタンで操作</span>
+    </footer>
+    <nav class="touch" aria-label="タッチ操作">
+      <button data-key="left" aria-label="左へ">←</button>
+      <button data-key="right" aria-label="右へ">→</button>
+      <button data-key="jump" class="jump" aria-label="ジャンプ">↑</button>
+    </nav>
+  </main>
+  <script src="game.js"></script>
 </body>
 </html>
