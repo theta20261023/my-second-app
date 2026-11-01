@@ -2,19 +2,25 @@
 
 ## Build, run, and test
 
-This is a static browser game; there is no package manager, build step, configured test runner, or lint command. Serve the repository root with `python3 -m http.server 8000` and open `http://localhost:8000/`. There is no single-test command; verify gameplay changes in the browser.
+This is a static browser game with no package manager, build step, configured test runner, or lint command.
+
+- Run it with `python3 -m http.server 8000` from the repository root, then open `http://localhost:8000/`.
+- Check JavaScript syntax with `node --check game.js`.
+- There is no automated or single-test command. For gameplay changes, manually start a run, check keyboard and touch controls as applicable, collect a coin and confirm the HUD updates, then verify the relevant fall/restart or goal/result flow.
 
 ## Architecture
 
-- `index.html` is the Japanese-language page shell. It defines the canvas, HUD, intro/result overlays, keyboard help, and touch controls; its IDs and `data-key` attributes are used by `game.js`.
-- `game.js` owns the game state and rendering. It draws the fixed 960×540 canvas, while the level lives in a 2700px world and `camera` scrolls the view. The animation loop updates physics and collisions before drawing the background, platforms, coins, goal, and player.
+- `index.html` is the Japanese-language page shell. It defines the canvas, centered coin score, lives/restart controls, intro/result overlays, keyboard help, and touch controls; its IDs and `data-key` attributes are used by `game.js`.
+- `game.js` owns game state, input, physics, collisions, and canvas rendering. The logical canvas is 960×540 and the level is a 2700px world; `camera` scrolls the view. Each animation frame updates gameplay before drawing the background, platforms, coins, goal, and player.
 - Game state and HUD/overlay state are coordinated in `game.js`: `reset()` starts a run, `finish()` presents the result, and `update()` advances only while playing. Keyboard and pointer controls feed the same `keys` set.
-- `style.css` styles the page and scales the canvas responsively; it also switches to on-screen touch controls at the mobile breakpoint. Keep visual layout and game rendering changes in their respective files.
+- `style.css` styles the page shell and scales the canvas responsively; it also switches to on-screen touch controls at the mobile breakpoint. Keep DOM/layout styling in CSS/HTML and in-game scenery and sprites in the canvas renderer.
 
 ## Codebase conventions
 
 - Keep player, platform, coin, camera, and collision positions in canvas/world coordinates; convert world x-coordinates to screen coordinates by subtracting `camera` when drawing.
+- Enemies patrol between world-coordinate bounds, are recreated by `reset()`, and use the existing life system; keep their movement/collision in `update()` and their appearance in the canvas renderer.
 - The physics update uses `dt` normalized to roughly 60 FPS. Preserve that time-step convention when changing movement or gravity.
-- The DOM is a deliberate bridge between the canvas game and accessible/page UI: update existing HUD and overlay elements through their IDs, and keep the HTML's keyboard/touch affordances consistent with input handling.
+- `requestAnimationFrame` passes elapsed time to rendering for visual animation; keep animation in drawing code and gameplay state changes in `update()`.
+- The DOM is a deliberate bridge between the canvas game and accessible/page UI: update existing HUD and overlay elements through their IDs, and keep the HTML's keyboard help and `data-key` touch controls consistent with the input handling in `game.js`.
 - User-facing page and game copy is Japanese, while game identifiers and internal state names are English.
 - 説明やユーザー向けの案内は日本語で表示してください。
